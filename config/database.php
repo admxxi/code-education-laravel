@@ -61,8 +61,8 @@ return [
             'charset'   => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix'    => '',
-            'strict'    => false,
-            'unix_socket' => '/var/run/mysqld/mysqld.sock',
+            'strict'    => false
+            // 'unix_socket'   => getenv('UNIX_SOCKET'),
         ],
 
         'pgsql' => [
