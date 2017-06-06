@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use CodeProject\Http\Requests;
 
+use Carbon\Carbon;
+
 class ClientController extends Controller
 {
     /**
@@ -36,7 +38,7 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return \CodeProject\Client::create($request->all());
     }
 
     /**
@@ -48,6 +50,7 @@ class ClientController extends Controller
     public function show($id)
     {
         //
+        return \CodeProject\Client::find($id);
     }
 
     /**
@@ -70,7 +73,8 @@ class ClientController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $object = \CodeProject\Client::find($id)->update($request->all());
+        return response()->json(['data'=> $object, 'message' => 'The zone has been updated'], 200);
     }
 
     /**
@@ -81,6 +85,26 @@ class ClientController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $object = \CodeProject\Client::find($id);
+        echo date('l jS \of F Y h:i:s A');
+
+        if($object) {
+            $data = $object;
+            $object->delete();
+            return response()->json(
+                [
+                    'data' => $data,
+                    'message' => 'Object delete successfully',
+                    'timestamp' => Carbon::now()->setTimezone('UTC'),
+                    'success' => true
+                ], 200);
+        } else {
+            return response()->json(
+                [
+                    'data'=>'',
+                    'message' => 'Record not found',
+                    'errors' => []
+                ], 404);
+        }
     }
 }
