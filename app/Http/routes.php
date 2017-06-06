@@ -15,8 +15,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// List
 Route::get('client', 'ClientController@index');
+// Create
 Route::post('client', 'ClientController@store');
+// Read
 Route::get('client/{id}', 'ClientController@show');
+// Update
+Route::put('client/{id}', 'ClientController@update');
+// Delete
 Route::delete('client/{id}', 'ClientController@destroy');
-Route::patch('client/{id}', 'ClientController@update');
