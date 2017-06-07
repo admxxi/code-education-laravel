@@ -3,9 +3,10 @@
 namespace CodeProject\Http\Controllers;
 
 use Illuminate\Http\Request;
+// use Illuminate\Support\Facades\DB;
 
+use CodeProject\Http\Controllers\Controller;
 use CodeProject\Http\Requests;
-
 use Carbon\Carbon;
 
 class ClientController extends Controller
@@ -17,7 +18,14 @@ class ClientController extends Controller
      */
     public function index()
     {
-        return \CodeProject\Client::all();
+        $client = \CodeProject\Client::all();
+        $meta = collect(
+            [
+                'client'=>$client,
+                'meta' => array('total'=> $client->count())
+            ]
+        );
+        return $meta;
     }
 
     /**
@@ -73,8 +81,18 @@ class ClientController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $object = \CodeProject\Client::find($id)->update($request->all());
-        return response()->json(['data'=> $object, 'message' => 'The zone has been updated'], 200);
+        $object = \CodeProject\Client::find($id);
+
+        if($object) {
+            $object->update($request->all());
+            return response()->json(['data'=> $object, 'message' => 'The zone has been updated'], 200);
+        }
+        return response()->json(
+            [
+                'data'=>'',
+                'message' => 'Record not found',
+                'errors' => []
+            ], 404);
     }
 
     /**
@@ -86,7 +104,6 @@ class ClientController extends Controller
     public function destroy($id)
     {
         $object = \CodeProject\Client::find($id);
-        echo date('l jS \of F Y h:i:s A');
 
         if($object) {
             $data = $object;
@@ -98,13 +115,13 @@ class ClientController extends Controller
                     'timestamp' => Carbon::now()->setTimezone('UTC'),
                     'success' => true
                 ], 200);
-        } else {
-            return response()->json(
-                [
-                    'data'=>'',
-                    'message' => 'Record not found',
-                    'errors' => []
-                ], 404);
         }
+        return response()->json(
+            [
+                'data'=>'',
+                'message' => 'Record not found',
+                'errors' => []
+            ], 404);
+
     }
 }
