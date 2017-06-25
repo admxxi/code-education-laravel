@@ -18,7 +18,7 @@ class ClientController extends Controller
      */
     public function index()
     {
-        $client = \CodeProject\Client::all();
+        $client = \CodeProject\Models\Client::all();
         $meta = collect(
             [
                 'client'=>$client,
@@ -46,7 +46,7 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        return \CodeProject\Client::create($request->all());
+        return \CodeProject\Models\Client::create($request->all());
     }
 
     /**
@@ -58,7 +58,7 @@ class ClientController extends Controller
     public function show($id)
     {
         //
-        return \CodeProject\Client::find($id);
+        return \CodeProject\Models\Client::find($id);
     }
 
     /**
@@ -103,7 +103,7 @@ class ClientController extends Controller
      */
     public function destroy($id)
     {
-        $object = \CodeProject\Client::find($id);
+        $object = \CodeProject\Models\Client::find($id);
 
         if($object) {
             $data = $object;
