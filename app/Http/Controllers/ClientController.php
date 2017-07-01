@@ -2,6 +2,8 @@
 
 namespace CodeProject\Http\Controllers;
 
+use CodeProject\Entities\Client;
+use CodeProject\Repositories\ClientRepository;
 use Illuminate\Http\Request;
 // use Illuminate\Support\Facades\DB;
 
@@ -16,9 +18,9 @@ class ClientController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(ClientRepository $repository)
     {
-        $client = \CodeProject\Models\Client::all();
+        $client = $repository->all();
         $meta = collect(
             [
                 'client'=>$client,
@@ -46,7 +48,7 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        return \CodeProject\Models\Client::create($request->all());
+        return Client::create($request->all());
     }
 
     /**
@@ -58,7 +60,7 @@ class ClientController extends Controller
     public function show($id)
     {
         //
-        return \CodeProject\Models\Client::find($id);
+        return Client::find($id);
     }
 
     /**
@@ -81,7 +83,7 @@ class ClientController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $object = \CodeProject\Client::find($id);
+        $object = Client::find($id);
 
         if($object) {
             $object->update($request->all());
@@ -103,7 +105,7 @@ class ClientController extends Controller
      */
     public function destroy($id)
     {
-        $object = \CodeProject\Models\Client::find($id);
+        $object = Client::find($id);
 
         if($object) {
             $data = $object;
