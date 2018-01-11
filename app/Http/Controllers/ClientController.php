@@ -2,25 +2,29 @@
 
 namespace CodeProject\Http\Controllers;
 
-use CodeProject\Entities\Client;
 use CodeProject\Repositories\ClientRepository;
 use Illuminate\Http\Request;
-// use Illuminate\Support\Facades\DB;
-
-use CodeProject\Http\Controllers\Controller;
-use CodeProject\Http\Requests;
 use Carbon\Carbon;
 
 class ClientController extends Controller
 {
     /**
+     * @var ClientRepository
+     */
+    private $repository;
+
+    public function __construct(ClientRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(ClientRepository $repository)
+    public function index()
     {
-        $client = $repository->all();
+        $client = $this->repository->all();
         $meta = collect(
             [
                 'client'=>$client,
@@ -48,7 +52,7 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        return Client::create($request->all());
+        return $this->repository->create($request->all());
     }
 
     /**
@@ -60,7 +64,7 @@ class ClientController extends Controller
     public function show($id)
     {
         //
-        return Client::find($id);
+        return $this->repository->find($id);
     }
 
     /**
@@ -83,9 +87,9 @@ class ClientController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $object = Client::find($id);
+        $object = $this->repository->find($id);
 
-        if($object) {
+        if ($object) {
             $object->update($request->all());
             return response()->json(['data'=> $object, 'message' => 'The zone has been updated'], 200);
         }
@@ -105,9 +109,9 @@ class ClientController extends Controller
      */
     public function destroy($id)
     {
-        $object = Client::find($id);
+        $object = $this->repository->find($id);
 
-        if($object) {
+        if ($object) {
             $data = $object;
             $object->delete();
             return response()->json(
@@ -124,6 +128,5 @@ class ClientController extends Controller
                 'message' => 'Record not found',
                 'errors' => []
             ], 404);
-
     }
 }
